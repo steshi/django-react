@@ -4,7 +4,7 @@ to start project:
 
  start backend serv: 
 
-2) *go to  <b>django-react</b> directory* and activate virual enviroment using command: <b> source .venv/bin activate </b>
+2) *go to  <b>django-react</b> directory* and activate virual enviroment using command: <b> source .venv/bin/activate </b>
  
 3) *go to  <b>django-react/react_django</b>  directory* and start backend server on your localhost using command: <b> make backend_start </b>
  
