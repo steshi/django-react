@@ -180,6 +180,8 @@ const App = () => {
       </Tab>
       <Tab eventKey="cars" title="Cars">
       </Tab>
+      <Tab eventKey="rels" title="Relationships">
+      </Tab>
       </Tabs>
       {loaded ? content : <>Loading.....</>}
       </>

@@ -20,7 +20,7 @@ import persons.views, cars.views
 urlpatterns = [
     path('admin/', admin.site.urls),
     re_path(r'^persons/$', persons.views.persons_list),
-    # re_path(r'^persons/fake/$', persons.views.persons_fake),
+    re_path(r'^rels/$', persons.views.rels),
     re_path(r'^cars/$', cars.views.cars_list),
 
 ]
