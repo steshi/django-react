@@ -41,9 +41,19 @@ const App = () => {
     fetchData();
   }, [currentSubject, currentPage, perPage, sortBy, filters])
 
-  const renderPagination = () => {
+  const handleChangePage = (e) => {
+    e.preventDefault();
+    const page = e.target[0].value;
+    if (page) {
+      setCurrentPage(page)
+    }
+  }
+
+  const renderPaginationList = () => {
     const pagesCount = Math.ceil(countEntitys / perPage);
-    const pagesList = Array.from(Array(pagesCount + 1).keys()).slice(1);
+    const start = (currentPage - 5 > 1) ? currentPage - 5 : 1;
+    const end = (currentPage + 5 < pagesCount) ? currentPage + 5 : pagesCount;
+    const pagesList = Array.from(Array(pagesCount + 1).keys()).slice(start,end+1);
     return (
       <>
         {pagesList.map((page) => (
@@ -57,6 +67,20 @@ const App = () => {
       </>
     );
   };
+
+  const renderPaginationInput = () => {
+    const pagesCount = Math.ceil(countEntitys / perPage);
+    return (
+      <>
+      <form onSubmit={handleChangePage}>
+            <label>
+              <input type="text" placeholder={`1...${pagesCount}`}/>
+            </label>
+            <input type="submit" value="go" />
+          </form>
+      </>
+    )
+  }
 
   const renderSort = () => {
     return (
@@ -99,7 +123,7 @@ const App = () => {
   const renderFilterForms = (entity) => {
     return (
     <tr><td></td>
-      {Object.keys(entity).slice(1).map((key) => 
+      {Object.keys(entity).slice(1, 5).map((key) => 
         <td key={uid()}>
           <form onSubmit={handleSearch}>
             <label>
@@ -128,15 +152,16 @@ const App = () => {
 
   const content = (data.length === 0) ? 'Нет подходящих записей' : (
     <DataContext.Provider value={data}>
-      Всего: <b>{countEntitys}</b>
+      Всего записей: <b>{countEntitys}</b><br />
+      Всего страниц: <b>{Math.ceil(countEntitys / perPage)}</b>
       <br />
-           Страницы: {renderPagination()}
+           Перейти на страницу: {renderPaginationInput()}
            {renderSort()}
            {loaded && <table border="1">
               {renderTableHead(data[0])}
               <Table />
             </table>}
-      Страницы: {renderPagination()}
+      Страницы: {renderPaginationList()}
     </DataContext.Provider>
   );
 
