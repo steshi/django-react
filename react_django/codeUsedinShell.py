@@ -1,28 +1,21 @@
 # #!/usr/bin/env python3
+from cars.models import Car
+from persons.models import Person
+from faker import Faker
+from faker_vehicle import VehicleProvider
+import random
 
-# from cars.models import Car
-# from persons.models import Person
-# from faker import Faker
-# from faker_vehicle import VehicleProvider
-# import random
 
-# # Person.objects.all().delete()
-# # Car.objects.all().delete()
 
-# faker = Faker()
-# faker.add_provider(VehicleProvider)
-
+faker = Faker()
+faker.add_provider(VehicleProvider)
+def print_random_model():
+	print(faker.vehicle_make_model(), 111111111)
 
 # for _ in range(0, 15):
 # 	Car.objects.create(model=faker.vehicle_make_model(), number=faker.license_plate(), manufacturedate=faker.date_between())
 # for _ in range(0, 10):
 # 	Person.objects.create(name=faker.first_name(), surname=faker.last_name(), driverlicensenum=faker.nic_handle('DL'), birthdate=faker.date_between(80, 18))
-
-# import random
-
-# persons_count = Person.object.all().count()
-# cars_count = Car.object.all().count()
-
 
 
 # for id in range(1, personscount):

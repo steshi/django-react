@@ -18,6 +18,7 @@ def persons_list(request):
         filtersEntries = filtersString.split('*')
         filtersPairs = list(map(lambda f: f.split('='), filtersEntries))
         filtersDict = {}
+
         if len(filtersString) > 0:
             for key, value in filtersPairs:
                 filtersDict[key] = value
@@ -58,7 +59,7 @@ def rels(request):
     if request.method == 'GET':
         data = []
         sortby = request.GET.get('sortby', 'pk')
-        persons = Person.objects.all().order_by(sortby)
+        persons = Person.objects.prefetch_related('cars').order_by(sortby)
         filtersString = request.GET.get('filters', '')
         filtersEntries = filtersString.split('*')
         filtersPairs = list(map(lambda f: f.split('='), filtersEntries))
@@ -73,8 +74,11 @@ def rels(request):
                     persons = persons.filter(surname__contains=filtersDict[filter])
                 if filter == 'driverlicensenum':
                     persons = persons.filter(driverlicensenum__contains=filtersDict[filter])
-                if filter == 'cars':
-                    persons = persons.filter(cars__model__contains=filtersDict[filter]) | persons.filter(cars__number__contains=filtersDict[filter])
+                if filter == 'model':
+                    persons = persons.filter(cars__model__contains=filtersDict[filter])
+                if filter == 'number':
+                    persons = persons.filter(cars__number__contains=filtersDict[filter])
+
         page = request.GET.get('page', 1)
         per = request.GET.get('per', 10)
         paginator = Paginator(persons, per)
@@ -85,12 +89,22 @@ def rels(request):
         except EmptyPage:
             data = paginator.page(paginator.num_pages)
             page=paginator.num_pages
-
         serializer = RelSerializer(data, context={'request': request}, many=True)
+        result = []
+        for person in serializer.data:
+            for car in person['cars']:
+                result.append({
+                    'pk': person['pk'],
+                    'name': person['name'],
+                    'surname': person['surname'],
+                    'driverlicensenum': person['driverlicensenum'],
+                    'model': car['model'],
+                    'number': car['number'],
+                })
 
         return Response(
             {   
-                'data': serializer.data,
+                'data': result,
                 'count': paginator.count,
                 'numpages' : paginator.num_pages,
                 'per': int(per),

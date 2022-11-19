@@ -123,7 +123,7 @@ const App = () => {
   const renderFilterForms = (entity) => {
     return (
     <tr><td></td>
-      {Object.keys(entity).slice(1, 5).map((key) => 
+      {Object.keys(entity).slice(1).map((key) => 
         <td key={uid()}>
           <form onSubmit={handleSearch}>
             <label>

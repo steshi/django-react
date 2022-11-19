@@ -15,6 +15,9 @@ faker = "^15.3.1"
 faker-vehicle = "^0.2.0"
 
 
+[tool.poetry.group.dev.dependencies]
+django-debug-toolbar = "^3.7.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

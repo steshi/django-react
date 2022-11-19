@@ -14,7 +14,8 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, re_path
+from django.urls import path, re_path, include
+from django.conf import settings
 import persons.views, cars.views
 
 urlpatterns = [
@@ -22,5 +23,8 @@ urlpatterns = [
     re_path(r'^persons/$', persons.views.persons_list),
     re_path(r'^rels/$', persons.views.rels),
     re_path(r'^cars/$', cars.views.cars_list),
-
 ]
+
+if settings.DEBUG:
+    urlpatterns += path('__debug__/', include('debug_toolbar.urls')),
+    
